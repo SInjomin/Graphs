@@ -6,3 +6,5 @@ Graphs/node_modules/
 Graphs/obj/
 
 .vs/
+
+.idea/
