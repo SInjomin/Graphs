@@ -1,0 +1,15 @@
+{
+  "name": "graphs",
+  "version": "0.0.0",
+  "description": "Graphs",
+    "main": "index.js",
+    "scripts": {
+        "start": "electron ."
+    },
+  "author": {
+    "name": "SInjomin"
+  },
+  "dependencies": {
+    "electron": "^12.0.2"
+  }
+}

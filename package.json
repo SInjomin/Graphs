@@ -1,11 +1,5 @@
 {
-  "name": "graphs",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "start"
-  },
-  "author": "SInjomin",
-  "license": "ISC"
+  "dependencies": {
+    "electron": "^12.0.2"
+  }
 }
