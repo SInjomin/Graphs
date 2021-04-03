@@ -9,8 +9,17 @@ create Graph and save it to the svg file.
 Starting
 ----------
 
+* Enter `Graphs/Graphs/` using
+  ```sh
+  cd Graphs/Graphs/
+  ```
+
 * Install dependencies using  
-  `npm install`
+  ```sh
+  npm install
+  ```
   
 * Start the program \
-  `npm start`
+  ```sh
+  npm start
+  ```
