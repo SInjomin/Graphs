@@ -3,11 +3,12 @@
 About
 ----------
 
-Graphs is opensource program in which you can
+Graphs is opensource desktop program in which you can
 create Graph and save it to the svg file.
 
 Starting
 ----------
+
 * Install dependencies using  
   `npm install`
   

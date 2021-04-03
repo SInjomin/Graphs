@@ -2,10 +2,10 @@
   "name": "graphs",
   "version": "0.0.0",
   "description": "Graphs",
-    "main": "index.js",
-    "scripts": {
-        "start": "electron ."
-    },
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
   "author": {
     "name": "SInjomin"
   },
