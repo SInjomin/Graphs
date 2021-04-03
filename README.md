@@ -19,7 +19,7 @@ Starting
   npm install
   ```
   
-* Start the program \
+* Start the program 
   ```sh
   npm start
   ```
