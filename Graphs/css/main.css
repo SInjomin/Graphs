@@ -1,0 +1,15 @@
+canvas{
+    margin-top: 2.5%
+}
+button.actionType{
+    position:absolute;
+    margin-top: 5px;
+}
+
+#btn1 {
+    margin-left: 5px;
+}
+
+#btn2{
+     margin-left:145px;
+ }
