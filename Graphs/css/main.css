@@ -1,5 +1,6 @@
 canvas{
-    margin-top: 2.5%
+    margin-top: 2.5%;
+    resize: both;
 }
 button.actionType{
     position:absolute;

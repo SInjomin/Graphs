@@ -14,135 +14,116 @@ function Init() {
 
     canvas = document.getElementById("cnvs");
     console.log(toString(canvas));
-    canvas.Width = 800 //Ширина холста
-    canvas.Height = 600 //Высота холста
     ctx = canvas.getContext("2d");
-    Draw();
+    canvas.Width = 800;
+    canvas.Height = 600;
+    clearScreen();
     console.log("Initialisated");
 
     canvas.onclick = (e) => {
         var x = (e.pageX - canvas.offsetLeft);
         var y = (e.pageY - canvas.offsetTop);
-        switch (actionType) {
-            case "AddTop":
-                addTop(x, y);
-                break;
-            case "SetLine":
-                addLine(e);
-                break;
-            default:
-                alert("Выберите действие");
-                break;
-        };
+        action(actionType,x,y,e);
     };
 
-    canvas.ontouchend = (e) => { // обрабатываем касания пальцем
+    canvas.ontouchend = (e) => { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         var x = (e.touches[0].pageX - canvas.offsetLeft);
         var y = (e.touches[0].pageY - canvas.offsetTop);
+        action(actionType,x,y,e);
+    };
+
+    function action(actionType,x,y,e){
         switch (actionType) {
             case "AddTop":
-                addTop(x, y);
+                Tops.push(new Top(x, y));
                 break;
             case "SetLine":
                 addLine(e);
                 break;
             default:
-                alert("Выберите действие");
+                alert("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 break;
         };
-    };
+    }
+
 }
 
-function Draw() {
+function clearScreen() {
     ctx.fillStyle = "rgb(255, 255, 255)"
     ctx.fillRect(0, 0, canvas.Width, canvas.Height);
     Tops = [];
     Lines = [];
 }
 
-function addTop(x, y) {
-    let top = new Top(x, y)
-    Tops.push(top);
-}
-
 function Top(x, y) {
-    if (!new.target) { // в случае, если вы вызвали без оператора new
-        return new Top(x, y); // ...добавим оператор new за вас
+    if (!new.target) { // пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ new
+        return new Top(x, y); // ...пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ new пїЅпїЅ пїЅпїЅпїЅ
+    }
+    
+    var arectangle;
+
+    this.DrawTop = function (strokeStyle = "black", fillStyle = "rgb(104,174,186)"){
+        ctx.beginPath();
+        ctx.strokeStyle = strokeStyle;
+        ctx.fillStyle = fillStyle;
+        var rectangle = new Path2D();
+        rectangle.id = Tops.length;
+        rectangle.arc(x, y, 8, 2 * Math.PI, 0, true)
+        ctx.closePath();
+        ctx.fill(rectangle);
+        arectangle = rectangle;
     }
 
-    ctx.beginPath();
-    ctx.strokeStyle = "black";
-    ctx.fillStyle = "rgb(104,174,186)";
-    var arectangle = new Path2D();
-    arectangle.id = Tops.length;
-    arectangle.arc(x, y, 8, 2 * Math.PI, 0, true)
-    ctx.closePath();
-    ctx.fill(arectangle);
+    this.DrawTop();
 
+    this.arectangle = arectangle;
     this.y = y;
     this.x = x;
-    this.arectangle = arectangle;
+    
 }
 
-var x1, y1, x2, y2;
+var Top1, Top2;
 
 async function addLine(e) {
     
     Tops.forEach(f => {
         if (ctx.isPointInPath(f.arectangle, e.offsetX, e.offsetY)) {
-            ctx.beginPath();
-            ctx.fillStyle = "red";
-            ctx.arc(Tops[f.arectangle.id].x, Tops[f.arectangle.id].y, 8, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.closePath();
+            f.DrawTop(undefined, "red");
 
-            if (x1 == null && y1 == null) {
-                x1 = f.x;
-                y1 = f.y;
+            if (Top1 == null) {
+                Top1 = f;
             }
-            else if (x2 == null && y2 == null) {
-                x2 = f.x;
-                y2 = f.y;
-                Lines.push(new Line(x1, y1, x2, y2));
-                x1 = null;
-                x2 = null;
-                y1 = null;
-                y2 = null;
+            else if (Top2 == null) {
+                Top2 = f;
+                Lines.push(new Line(Top1,Top2));
+                Top1 = null;
+                Top2 = null;
             }
             else {
                 alert("error");
-                x1 = null;
-                x2 = null;
-                y1 = null;
-                y2 = null;
+                Top1 = null;
+                Top2 = null;
             }
         }
     })
 }
 
-function Line(x1, y1, x2, y2) {
-    if (!new.target) { // в случае, если вы вызвали без оператора new
-        return new Line(x1, y1, x2, y2); // ...добавим оператор new за вас
+function Line(Top1, Top2) {
+    if (!new.target) { // пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ new
+        return new Line(Top1, Top2); // ...пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ new пїЅпїЅ пїЅпїЅпїЅ
     }
 
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
+    this.x1 = Top1.x;
+    this.y1 = Top1.y;
+    this.x2 = Top2.x;
+    this.y2 = Top2.y;
 
-    ctx.fillStyle = "rgb(104, 174, 186)";
     ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
+    ctx.moveTo(this.x1, this.y1);
+    ctx.lineTo(this.x2, this.y2);
     ctx.fill()
     ctx.stroke();
     ctx.closePath();
-    ctx.beginPath();
-    ctx.arc(x1, y1, 8, 2 * Math.PI, 0);
-    ctx.fill()
-    ctx.closePath();
-    ctx.beginPath();
-    ctx.arc(x2, y2, 8, 2 * Math.PI, 0);
-    ctx.fill()
-    ctx.closePath();
+    Top1.DrawTop();
+    Top2.DrawTop();
 }
