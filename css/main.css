@@ -1,0 +1,12 @@
+canvas{
+    position: relative;
+    z-index: 2;
+}
+div{
+    position: fixed;
+    margin-top: 5px;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}

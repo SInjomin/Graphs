@@ -8,13 +8,17 @@ create Graph and save it to the svg file.
 
 Starting
 ----------
-
-* Enter `Graphs/Graphs/` using
+* Clone repository
   ```sh
-  cd Graphs/Graphs/
+  git clone https://github.com/SInjomin/Graphs.git
   ```
 
-* Install dependencies using  
+* Enter directory
+  ```sh
+  cd Graphs/
+  ```
+
+* Install dependencies
   ```sh
   npm install
   ```
