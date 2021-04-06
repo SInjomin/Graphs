@@ -12,13 +12,11 @@ function setActionType(type) {
 
 function Init() {
 
-    canvas = document.getElementById("cnvs");
-    console.log(toString(canvas));
+    canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    canvas.Width = 800;
-    canvas.Height = 600;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     clearScreen();
-    console.log("Initialisated");
 
     canvas.onclick = (e) => {
         var x = (e.pageX - canvas.offsetLeft);
@@ -43,14 +41,14 @@ function Init() {
             default:
                 alert("�������� ��������");
                 break;
-        };
+        }
     }
 
 }
 
 function clearScreen() {
     ctx.fillStyle = "rgb(255, 255, 255)"
-    ctx.fillRect(0, 0, canvas.Width, canvas.Height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     Tops = [];
     Lines = [];
 }
@@ -59,24 +57,21 @@ function Top(x, y) {
     if (!new.target) { // � ������, ���� �� ������� ��� ��������� new
         return new Top(x, y); // ...������� �������� new �� ���
     }
-    
-    var arectangle;
 
-    this.DrawTop = function (strokeStyle = "black", fillStyle = "rgb(104,174,186)"){
+    this.DrawTop = function (strokeStyle = "black",
+                             fillStyle = "rgb(104,174,186)",
+                             radius = 26){
         ctx.beginPath();
         ctx.strokeStyle = strokeStyle;
         ctx.fillStyle = fillStyle;
-        var rectangle = new Path2D();
-        rectangle.id = Tops.length;
-        rectangle.arc(x, y, 8, 2 * Math.PI, 0, true)
+        this.arectangle = new Path2D();
+        this.arectangle.arc(x, y, radius, 2 * Math.PI, 0, true)
         ctx.closePath();
-        ctx.fill(rectangle);
-        arectangle = rectangle;
+        ctx.fill(this.arectangle);
     }
 
+    this.connectedLines = [];
     this.DrawTop();
-
-    this.arectangle = arectangle;
     this.y = y;
     this.x = x;
     
@@ -84,7 +79,7 @@ function Top(x, y) {
 
 var Top1, Top2;
 
-async function addLine(e) {
+function addLine(e) {
     
     Tops.forEach(f => {
         if (ctx.isPointInPath(f.arectangle, e.offsetX, e.offsetY)) {
@@ -113,17 +108,24 @@ function Line(Top1, Top2) {
         return new Line(Top1, Top2); // ...������� �������� new �� ���
     }
 
-    this.x1 = Top1.x;
-    this.y1 = Top1.y;
-    this.x2 = Top2.x;
-    this.y2 = Top2.y;
+    Top1.connectedLines.push(this);
+    Top2.connectedLines.push(this);
 
-    ctx.beginPath();
-    ctx.moveTo(this.x1, this.y1);
-    ctx.lineTo(this.x2, this.y2);
-    ctx.fill()
-    ctx.stroke();
-    ctx.closePath();
-    Top1.DrawTop();
-    Top2.DrawTop();
+    this.Top1 = Top1;
+    this.Top2 = Top2;
+
+    this.DrawLine = function (strokeStyle = "black", lineWidth = 10) {
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = strokeStyle;
+        ctx.beginPath();
+        ctx.moveTo(this.Top1.x, this.Top1.y);
+        ctx.lineTo(this.Top2.x, this.Top2.y);
+        ctx.stroke();
+        ctx.closePath();
+
+        this.Top1.DrawTop();
+        this.Top2.DrawTop();
+    }
+
+    this.DrawLine();
 }
